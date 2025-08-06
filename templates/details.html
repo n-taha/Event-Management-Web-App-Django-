@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class='bg-gray-100'>
+    <section class='container mx-auto'>
+        <h1 class='text-[25px] text-center font-bold mt-3 mb-3'> Event Details</h1>
+     <div class='flex justify-center items-center mt-5 mb-5'>
+           <div class='font-bold text-gray-800 bg-white px-4 py-3 rounded-md'>
+            <h1 class='text-[20px] mt-4'>Event Name: {{events.name}}</h1>
+            <h3 class='text-[20px] mt-4'>Event Category: {{events.category}}</h3>
+            <p class='text-[20px] mt-4'>Event Description: {{events.description}}</p>
+            <h2 class='text-[20px] mt-4'>Event Date: {{events.date}}</h2>
+            <h2 class='text-[20px] mt-4'>Event Time: {{events.time}}</h2>
+            <h2 class='text-[20px] mt-4'>Event Location: {{events.locations}}</h2>
+            <h2 class='text-[20px] mt-4'>Total Parcipants: {{events.total_participants}}</h2>
+            <p class='text-[20px] mt-4'>Event Participants</p>
+            {% for participant in events.participants.all %}
+                <li class='text-[15px] mt-3'>{{participant.name}} {{participant.email}}</li>
+            {% endfor %}
+    </div>
+     </div>
+    </section>
+</body>
+</html>

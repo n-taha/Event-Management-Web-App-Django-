@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class='bg-gray-100'>
+
+    {% comment "" %}Total Task And Participants{% endcomment %}
+    <main class='mb-6'>
+        <section class='container mx-auto grid grid-cols-12 gap-4 mt-6'>
+            <div class='md:col-span-6 col-span-12 shadow-lg px-4 py-4 rounded-md bg-linear-to-r/increasing from-indigo-500 to-teal-400'>
+                <h1 class='text-2xl text-white font-semibold'>Total Events: {{counts.total_event}}</h1>
+            </div>
+
+             <div class='md:col-span-6 col-span-12 shadow-lg px-4 py-4 bg-linear-to-r/increasing from-indigo-500 to-teal-400 rounded-md '>
+                <h1 class='text-2xl font-semibold text-white'>Total Participants: {{total_participants.total}}</h1>
+            </div>
+        </section>
+    </main>
+
+    <hr>
+
+
+
+    {% comment %}Total Events{% endcomment %}
+    <main class='mt-6'>
+        <h1 class='text-center font-bold text-[30px]'>Our Events</h1>
+         {% if messages %}
+            {% for message in messages %}
+              <h1 class='font-bold text-[20px] mt-2 mb-3 text-center {% if message.tags == 'success' %}text-green-600{% endif %} {% if message.tags == 'error' %}text-red-600{% endif %}'>{{message}}</h1>
+            {% endfor %}
+         {% endif %}
+       <div class='flex items-center justify-center mt-3 mb-3'>
+         <a href="{% url "create-event" %}" class='bg-linear-to-r/increasing from-indigo-500 to-teal-400 rounded-md px-2 py-1 rounded-md text-white font-semibold text-center'>Add Event</a>
+       </div>
+            <section class = 'container mx-auto grid grid-cols-12 gap-4'>
+
+                {% comment "" %}card{% endcomment %}
+             {% for event in events.all  %}
+                   <div class='md:col-span-4 col-span-12 bg-white px-3 py-2 shadow-md rounded-md pb-6'>
+                   <div class='mb-6'>
+                     <h1 class='text-lg font-bold text-gray-700'>Event Name :  <span class='text-sm text-gray-500'> {{event.name}}</span></h1>
+                    <h5 class='text-lg font-bold text-gray-700'>Category   : <span class='text-sm text-gray-500'>{{event.category.name}}</span></h5>
+                    <h5 class='text-lg font-bold text-gray-700'>Date       : <span class='text-sm text-gray-500'>{{event.date}}</span></h5>
+                    <h5 class='text-lg font-bold text-gray-700'>Time       : <span class='text-sm text-gray-500'>{{event.time}}</span></h5>
+                   </div>
+
+                   <div>
+                        <a href="{% url "event-details" event.id %}" class='bg-linear-to-r/increasing from-indigo-500 to-teal-400 rounded-md px-2 py-1 rounded-md text-white font-semibold'>See Details</a>
+                   </div>
+
+                    <div class='mt-5'>
+                         <a href="{% url "update-event" event.id %}" class='bg-linear-to-r/increasing from-indigo-500 to-teal-400 rounded-md px-2 py-1 rounded-md text-white font-semibold'>update event</a>
+                   </div>
+
+                   <div class='mt-5'>
+                        <form action="{% url "delete-event" event.id %}" method='POST'>
+                             {% csrf_token %}
+                             <button class='bg-linear-to-r/increasing from-indigo-500 to-teal-400 rounded-md px-2 py-1 rounded-md text-white font-semibold'>Delete Event</button>
+                        </form>
+                   </div>
+
+                </div>
+             {% endfor %}
+            </section>
+    </main>
+
+</body>
+</html>

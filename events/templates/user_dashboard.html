@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body>
+    <header class='bg-gray-300'>
+        <nav class='container mx-auto'>
+        <div class='flex justify-between px-2 py-2'>
+            <ul class='flex gap-5'>
+                <li class='text-[20px] font-semibold hover:scale-105 transition'><a href="{% url "dashboard" %}">Home</a></li>
+                <li class='text-[20px] font-semibold hover:scale-105 transition'><a href="{% url "dashboard" %}">Dashboard</a></li>
+                <li class='text-[20px] font-semibold hover:scale-105 transition'><a href="{% url "participated-event" request.user.id %}">Participated Events</a></li>
+            </ul>
+
+            <div class='flex gap-5'>
+                <img src="{% static "images/img.jpg" %}" alt="" class='w-8 h-8 rounded-full'>
+                 <form action="{% url "logout" %}" method='POST'>
+                        {% csrf_token %}
+                        <button type='submit' class='text-white font-semibold bg-blue-500 rounded px-2 mx-2 text-[20px]'>Logout</button>
+                </form>
+            </div>
+        </div>
+        </nav>
+    </header>
+
+    {% block content %}
+
+    {% endblock content %}
+
+</body>
+</html>

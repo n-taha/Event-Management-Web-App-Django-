@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class = 'bg-gray-100'>
+
+     <header class='bg-gray-200'>
+        <nav class='container mx-auto py-4'>
+            <section class='flex justify-around gap-12'>
+                <div class='text-blue-500 font-bold text-[23px]'>
+                    <h3>Event Master</h3>
+                </div>
+               <div class='flex justify-center list-none gap-5'>
+                <li class='text-[20px] font-semibold hover:scale-105 transition'><a href="{% url "dashboard" %}">Dashboard</a></li>
+                <li class='text-[20px] font-semibold hover:scale-105 transition'><a href="{% url "group-list" %}">Group-List</a></li>
+                <li class='text-[20px] font-semibold hover:scale-105 transition'><a href="{% url "create-event" %}">Create Event</a></li>
+                <li class='text-[20px] font-semibold hover:scale-105 transition'><a href="{% url "create-group" %}">Create Group</a></li>
+               </div>
+
+                <div class=''>
+                    <img src="{% static "images/img.jpg" %}" alt="" class='w-8 h-8 rounded-full'>
+                </div>
+            </section>
+        </nav>
+    </header>
+
+    <section class = 'container mx-auto'>
+        <div class='flex justify-center items-center mt-5 mb-5'>
+         {% if messages %}
+            {% for message in messages %}
+              <h1 class = '{% if message.tags == 'success' %}font-bold text-green-500 text-[20px]{% endif %}'>{{message}}</h1>
+            {% endfor %}
+         {% endif %}
+      <form action="#" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{event_form}}
+        {{category_form}}
+        <button type='submit' class='px-2 py-1 bg-rose-600 rounded-md text-white'>Create Event</button>
+      </form>
+        </div>
+    </section>
+</body>
+</html>

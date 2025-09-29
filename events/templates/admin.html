@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +9,29 @@
 </head>
 <body class='bg-gray-100'>
 
-    {% comment "" %}Total Task And Participants{% endcomment %}
+        <header class='bg-gray-200'>
+        <nav class='container mx-auto py-4'>
+            <section class='flex justify-around gap-12'>
+                <div class='text-blue-500 font-bold text-[23px]'>
+                    <h3>Event Master</h3>
+                </div>
+               <div class='flex justify-center list-none gap-5'>
+                <li class='text-[20px] font-semibold hover:scale-105 transition'><a href="{% url "dashboard" %}">Dashboard</a></li>
+                <li class='text-[20px] font-semibold hover:scale-105 transition'><a href="#">Events</a></li>
+                <li class='text-[20px] font-semibold hover:scale-105 transition'><a href="{% url "create-event" %}">Create Event</a></li>
+               </div>
+
+                <div class='flex gap-4'>
+                    <img src="{% static "images/img.jpg" %}" alt="" class='w-8 h-8 rounded-full'>
+                    <form action="{% url "logout" %}" method='POST'>
+                        {% csrf_token %}
+                        <button type='submit' class='text-white font-semibold bg-blue-500 rounded px-2 mx-2 text-[20px]'>Logout</button>
+                    </form>
+                </div>
+            </section>
+        </nav>
+    </header>
+
     <main class='mb-6'>
         <section class='container mx-auto grid grid-cols-12 gap-4 mt-6'>
             <div class='md:col-span-6 col-span-12 shadow-lg px-4 py-4 rounded-md bg-linear-to-r/increasing from-indigo-500 to-teal-400'>

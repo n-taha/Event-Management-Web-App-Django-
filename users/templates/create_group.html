@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body>
+
+      <header class='bg-gray-200'>
+        <nav class='container mx-auto py-4'>
+            <section class='flex justify-around gap-12'>
+                <div class='text-blue-500 font-bold text-[23px]'>
+                    <h3>Event Master</h3>
+                </div>
+               <div class='flex justify-center list-none gap-5'>
+                <li class='text-[20px] font-semibold hover:scale-105 transition'><a href="{% url "dashboard" %}">Dashboard</a></li>
+                <li class='text-[20px] font-semibold hover:scale-105 transition'><a href="{% url "group-list" %}">Group-List</a></li>
+                <li class='text-[20px] font-semibold hover:scale-105 transition'><a href="{% url "create-event" %}">Create Event</a></li>
+                <li class='text-[20px] font-semibold hover:scale-105 transition'><a href="{% url "create-group" %}">Create Group</a></li>
+               </div>
+
+                <div class='flex gap-4'>
+                    <img src="{% static "images/img.jpg" %}" alt="" class='w-8 h-8 rounded-full'>
+                     <form action="{% url "logout" %}" method='POST'>
+                        {% csrf_token %}
+                        <button type='submit' class='text-white font-semibold bg-blue-500 rounded px-2 py-1 mx-2 text-[20px]'>Logout</button>
+                    </form>
+                </div>
+            </section>
+        </nav>
+    </header>
+
+    <div class='container mx-auto'>
+        <form action="" method='POST' class='my-5'>
+            {% csrf_token %}
+            {{form}}
+            <button type='submit' class='bg-blue-500 rounded px-2 py-1 text-white mt-5'>Create Group</button>
+        </form>
+    </div>
+</body>
+</html>

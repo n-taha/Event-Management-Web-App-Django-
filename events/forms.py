@@ -3,7 +3,7 @@ from events.models import Event, Category
 
 
 class FormMixin:
-    default_class = 'text-gray-800 border border-gray-200 mt-5 shadow-lg rounded-md w-full'
+    default_class = 'text-gray-800 border border-gray-200 mt-3 shadow-lg rounded-md w-full px-2 py-2'
 
     def apply_class(self):
         for field_name, field in self.fields.items():
@@ -25,7 +25,7 @@ class FormMixin:
                 })
             elif isinstance(field.widget, forms.CheckboxSelectMultiple):
                 field.widget.attrs.update({
-                    'class':self.default_class
+                    'class':'text-gray-800 mt-5'
                 })
             else:
                 field.widget.attrs.update({
@@ -33,11 +33,10 @@ class FormMixin:
                 })
 
 
-
 class EventModelForm( FormMixin ,forms.ModelForm):
     class Meta:
         model = Event
-        fields = ['name', 'description', 'date', 'locations', 'participants']
+        fields = ['name', 'description', 'date', 'locations','participants', 'asset']
         widgets = {
             'date': forms.SelectDateWidget,
             'participants': forms.CheckboxSelectMultiple,

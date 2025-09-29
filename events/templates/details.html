@@ -1,0 +1,57 @@
+{% extends "user_dashboard.html" %}
+{% load static %}
+{% block content %}
+    <section class='container mx-auto'>
+       <div class='grid grid-cols-12'>
+         <div class='md:col-span-6 col-span-12'>
+            <h1 class='text-[25px] text-center font-bold mt-3 mb-3'> Event Details</h1>
+            <div class='flex justify-center items-center mt-5 mb-5'>
+                <div class='font-bold text-gray-800 bg-white px-4 py-3 rounded-md'>
+                    <h1 class='text-[20px] mt-4'>Event Name: <span class='text-blue-500 font-bold'>{{events.name}}</span></h1>
+                    <h3 class='text-[20px] mt-4'>Event Category: <span class='text-blue-500 font-bold'>{{events.category}}</span></h3>
+                    <p class='text-[20px] mt-4'>Event Description: <span class='text-blue-500 font-bold'>{{events.description}}</span></p>
+                    <h2 class='text-[20px] mt-4'>Event Date: <span class='text-blue-500 font-bold'>{{events.date}}</span></h2>
+                    <h2 class='text-[20px] mt-4'>Event Time: {{events.time}}</h2>
+                    <h2 class='text-[20px] mt-4'>Event Location: {{events.locations}}</h2>
+                    <h2 class='text-[20px] mt-4'>Total Parcipants: {{events.total_participants}}</h2>
+                    <p class='text-[16px] mt-4'>Event Participants</p>
+                    {% for participant in events.participants.all %}
+                      <div class='flex mt-5'>
+                          <span class='text-[15px] mt w-8 h-8 bg-blue-500 text-white rounded-full flex justify-center mx-4'>{{participant.username|slice:'1'}}</span>
+                            <span>{{participant.username}}</span>
+                      </div>
+                    {% endfor %}
+                 </div>
+            </div>
+       </div>
+
+       <div class='md:col-span-6 col-span-12 mt-5'>
+            <div>
+                {% if events.asset %}
+                    <img src="{{events.asset.url}}" alt="" class='w-[200px] h-[200px]'>
+                {% endif %}
+            </div>
+            <div>
+                <table class='w-full'>
+                    <thead>
+                       <tr>
+                            <th class='px-3 py-2 border border-gray-300'>USER-ID</th>
+                            <th class='px-3 py-2 border border-gray-300'>USERNAME</th>
+                            <th class='px-3 py-2 border border-gray-300'>EMAIL</th>
+                       </tr>
+                    </thead>
+                    <tbody>
+                        {% for participant in events.participants.all %}
+                            <tr>
+                                <td class='px-4 py-2 border bg-gray-200 border-gray-300'>{{participant.id}}</td>
+                                <td class='px-4 py-2 border bg-gray-200 border-gray-300'>{{participant.username}}</td>
+                                <td class='px-4 py-2 border bg-gray-200 border-gray-300'>{{participant.email}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+         </div>
+       </div>
+    </section>
+{% endblock content %}

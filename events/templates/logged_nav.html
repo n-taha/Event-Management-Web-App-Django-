@@ -1,0 +1,21 @@
+<header class='bg-gray-300 py-2'>
+        <nav class='container mx-auto'>
+          <div class='flex justify-around'>
+            <div>
+                <li class='text-white font-semibold bg-blue-500 rounded px-2 list-none py-1 text-[20px]'>EventMaster</li>
+            </div>
+            <div class='flex'>
+                {% if request.user.is_authenticated %}
+                    <form action="{% url "logout" %}" method='POST'>
+                        {% csrf_token %}
+                        <button type='submit' class='text-white font-semibold bg-blue-500 rounded px-2 py-2 mx-2 text-[20px]'>Logout</button>
+                    </form>
+                    <a href="{% url "dashboard" %}" class='text-white font-semibold bg-blue-500 rounded px-2 py-1 mx-2 text-[20px]'>Dashboard</a>
+                    {% else %}
+                        <a href="{% url "sign-up" %}" class='text-white font-semibold bg-blue-500 rounded px-2 py-1 mx-2'>Sign up</a>
+                        <a href="{% url "sign-in" %}" class='text-white font-semibold bg-blue-500 rounded px-2 py-1 mx-2'>Login</a>
+                {% endif %}
+            </div>
+          </div>
+        </nav>
+    </header>

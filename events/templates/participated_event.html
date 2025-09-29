@@ -1,0 +1,25 @@
+{% extends "user_dashboard.html" %}
+{% block content %}
+    <div class='container mx-auto mt-3'>
+        <table class='w-full'>
+            <thead>
+                <th  class='px-3 py-2 border border-gray-300'>Serial</th>
+                <th  class='px-3 py-2 border border-gray-300'>Event name</th>
+                <th  class='px-3 py-2 border border-gray-300'>Event location</th>
+                <th  class='px-3 py-2 border border-gray-300'>Event Date</th>
+                <th  class='px-3 py-2 border border-gray-300'>Event Time</th>
+            </thead>
+            <tbody>
+                {% for event in user.event.all %}
+                    <tr>
+                        <td class='px-4 py-2 border bg-gray-200 border-gray-300'>{{forloop.counter}}</td>
+                        <td class='px-4 py-2 border bg-gray-200 border-gray-300'>{{event.name}}</td>
+                        <td class='px-4 py-2 border bg-gray-200 border-gray-300'>{{event.locations}}</td>
+                        <td class='px-4 py-2 border bg-gray-200 border-gray-300'>{{event.date}}</td>
+                        <td class='px-4 py-2 border bg-gray-200 border-gray-300'>{{event.time}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}

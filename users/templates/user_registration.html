@@ -1,0 +1,50 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body>
+
+    {% include "logged_nav.html" %}
+
+    <section class='container mx-auto mt-5'>
+            {% for message in messages %}
+                <p class='font-semibold text-[20px] text-green-600 my-3'>{{message}}</p>
+            {% endfor %}
+
+            {% if form.non_field_errors %}
+                <ul>
+                    {% for error in form.non_field_errors %}
+                        <li class='font-semibold text-[20px] text-red-600'>{{error}}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            <form method='POST'>
+                {% csrf_token %}
+                {% for field in form %}
+
+                    <p>
+                        <label for="{{field.id_for_label}}">{{field.label}}</label>
+                        {{field}}
+                    </p>
+
+                    {% if field.errors %}
+                        <ul>
+                            {% for error in field.errors %}
+                                <li class='font-semibold text-[20px] text-red-600'>{{error}}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+
+                {% endfor %}
+                <button type='submit' class='text-white bg-blue-500 font-semibold px-2 py-1 rounded mt-3'>Sign Up</button>
+            </form>
+    </section>
+
+</body>
+</html>

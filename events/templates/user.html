@@ -1,14 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-</head>
-<body class='bg-gray-100'>
-
+{% extends "user_dashboard.html" %}
+{% block content %}
     {% comment "" %}Total Task And Participants{% endcomment %}
+
+
     <main class='mb-6'>
         <section class='container mx-auto grid grid-cols-12 gap-4 mt-6'>
             <div class='md:col-span-6 col-span-12 shadow-lg px-4 py-4 rounded-md bg-linear-to-r/increasing from-indigo-500 to-teal-400'>
@@ -22,6 +16,18 @@
     </main>
 
     <hr>
+
+       <div class='container mx-auto'>
+       {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == 'success' %}
+                    <p class='font-semibold text-green-500 text-[20px]'>{{message}}</p>
+                    {% else %}
+                        <p class='font-semibold text-red-500 text-[20px]'>{{message}}</p>
+                {% endif %}
+            {% endfor %}
+       {% endif %}
+    </div>
 
 
 
@@ -42,11 +48,14 @@
 
                    <div>
                         <a href="{% url "event-details" event.id %}" class='bg-linear-to-r/increasing from-indigo-500 to-teal-400 rounded-md px-2 py-1 rounded-md text-white font-semibold'>See Details</a>
+
+                        <form action="{% url "rsvp-event" event.id %}" method='POST'>
+                            {% csrf_token %}
+                            <button type='submit' class='bg-blue-500 text-white font-semibold px-2 py-1 rounded mt-3'>RSVP</button>
+                        </form>
                    </div>
                 </div>
              {% endfor %}
             </section>
     </main>
-
-</body>
-</html>
+{% endblock content %}

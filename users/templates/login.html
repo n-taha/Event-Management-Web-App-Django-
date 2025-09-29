@@ -1,0 +1,22 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body>
+
+    {% include "logged_nav.html" %}
+
+    <div class='container mx-auto'>
+        <form action="" method='POST'>
+            {% csrf_token %}
+            {{form}}
+            <button type='submit' class='bg-blue-500 px-2 py-1 rounded text-white font-semibold mt-5'>Login</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -18,7 +18,7 @@
             </ul>
 
             <div class='flex gap-5'>
-                <img src="{% static "images/img.jpg" %}" alt="" class='w-8 h-8 rounded-full'>
+                <a href="{% url 'profile' %}"><img src="{% static 'images/img.jpg' %}" alt="" class='w-8 h-8 rounded-full'></a>
                  <form action="{% url "logout" %}" method='POST'>
                         {% csrf_token %}
                         <button type='submit' class='text-white font-semibold bg-blue-500 rounded px-2 mx-2 text-[20px]'>Logout</button>

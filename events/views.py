@@ -6,8 +6,13 @@ from events.forms import EventModelForm , CategoryModelForm
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from users.views import is_admin ,is_organizer, is_participant
 from django.contrib.auth.decorators import user_passes_test, permission_required, login_required
+from django.views.generic import CreateView, UpdateView, DeleteView,TemplateView
+
+User = get_user_model()
+
 def other(request):
     messages = [1,2,3,4,5,6,7,8,9]
     return render(request, 'test.html', {'messages':messages})
@@ -32,6 +37,24 @@ def user(request):
     }
     return render(request, 'user.html', context)
 
+class UserDashboard(TemplateView):
+    template_name = 'user.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['events'] = Event.objects.all()
+        context['counts']= Event.objects.aggregate(
+            total_event = Count('id')
+        )
+
+        context['total_participants'] = Participant.objects.aggregate(
+            total=Count('id')
+        )
+
+        return context
+
+
+
 @login_required
 @user_passes_test(is_organizer, login_url='home')
 def organizer(request):
@@ -47,6 +70,21 @@ def organizer(request):
         'total_participants':total_parcipants
     }
     return render(request, 'admin.html', context)
+
+class Organizer(TemplateView):
+    template_name = 'admin.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['events'] = Event.objects.all()
+        context['counts'] = Event.objects.aggregate(
+            total_event = Count('id')
+        )
+        context['total_participants'] = Participant.objects.aggregate(
+            total = Count('id')
+        )
+
+        return context
 
 @login_required
 @permission_required('events.add_event')
@@ -74,13 +112,41 @@ def create_event(request):
 
     return render(request, 'form.html', context)
 
+
+class CreateEvent(CreateView):
+    model = Event
+    form_class = EventModelForm
+    context_object_name = 'event_form'
+    template_name = 'form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['event_form'] = self.get_form()
+        context['category_form'] = CategoryModelForm()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        event_form = EventModelForm(request.POST, request.FILES)
+        category_form = CategoryModelForm(request.POST)
+
+        if event_form.is_valid() and category_form.is_valid():
+            category = category_form.save()
+            event = event_form.save(commit=False)
+            event.category = category
+            event.save()
+            event_form.save_m2m
+
+            messages.success(request, 'Event Created Successfully')
+            return redirect('create-event')
+
+
 @permission_required('events.change_event')
 def update_event(request, id):
     event = Event.objects.get(id=id)
     event_form = EventModelForm(instance = event)
     category_form = CategoryModelForm(instance = event.category)
     if request.method == 'POST':
-        event_form = EventModelForm(request.POST , instance = event)
+        event_form = EventModelForm(request.POST ,request.FILES, instance = event)
         category_form = CategoryModelForm(request.POST , instance = event.category)
 
         if event_form.is_valid() and category_form.is_valid():
@@ -99,6 +165,40 @@ def update_event(request, id):
 
     return render(request, 'form.html', context)
 
+
+class UpdateEvent(UpdateView):
+    model = Event
+    form_class = EventModelForm
+    context_object_name = 'event_form'
+    template_name = 'form.html'
+    pk_url_kwarg = 'id'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['event_form'] = self.get_form()
+
+        if hasattr(self.object, 'category') and self.object.category:
+            context['category_form'] = CategoryModelForm(instance=self.object.category)
+        else:
+            context['category_form'] = CategoryModelForm()
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        event_form = EventModelForm(request.POST, request.FILES, instance=self.object)
+        category_form = CategoryModelForm(request.POST, instance=self.object.category)
+
+        if event_form.is_valid() and category_form.is_valid():
+            category = category_form.save()
+            event = event_form.save(commit=False)
+            event.category = category
+            event.save()
+            event_form.save_m2m
+            messages.success(request, 'Event Updated Successfulyy')
+            return redirect('create-event')
+
+
 @permission_required('events.delete_event')
 def delete_event(request, id):
     if request.method == 'POST':
@@ -108,7 +208,18 @@ def delete_event(request, id):
         return redirect('organizer')
     else:
         messages.error(request, message='Something Went Wrong')
-        return redirect('organizer')
+        return redirect('dashboard')
+
+
+class DeleteEvent(DeleteView):
+    model = Event
+    pk_url_kwarg = 'id'
+    success_url = 'organizer'
+
+    def post(self, request, *args, **kwargs):
+        object = self.get_object()
+        object.delete()
+        return redirect(self.success_url)
 
 @login_required
 def event_details(request, id):

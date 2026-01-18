@@ -22,8 +22,12 @@
                </div>
 
                 <div class='flex gap-4'>
-                    <img src="{% static "images/img.jpg" %}" alt="" class='w-8 h-8 rounded-full'>
-                     <form action="{% url "logout" %}" method='POST'>
+                    {% if user.profile_picture %}
+                        <a href="{% url 'profile' %}"><img src="{% static 'user.profile_picture.url' %}" alt="" class='w-8 h-8 rounded-full'></a>
+                        {% else %}
+                        <a href="{% url 'profile' %}"><img src="{% static "images/img.jpg" %}" alt="" class='w-8 h-8 rounded-full'></a>
+                    {% endif %}
+                     <form action="{% url 'logout' %}" method='POST'>
                         {% csrf_token %}
                         <button type='submit' class='text-white font-semibold bg-blue-500 rounded px-2 py-1 mx-2 text-[20px]'>Logout</button>
                     </form>

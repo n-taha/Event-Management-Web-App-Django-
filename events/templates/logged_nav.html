@@ -1,10 +1,13 @@
 <header class='bg-gray-300 py-2'>
         <nav class='container mx-auto'>
-          <div class='flex justify-around'>
+          <div class='flex flex-col md:flex-row gap-3 md:justify-between md:items-center'>
             <div>
                 <li class='text-white font-semibold bg-blue-500 rounded px-2 list-none py-1 text-[20px]'>EventMaster</li>
             </div>
-            <div class='flex'>
+            <div>
+                <button id='menu-btn' class='md:hidden text-blue-500 text-2xl'> == </button>
+            </div>
+            <div class='md:flex flex-col md:flex-row hidden' id='menu'>
                 {% if request.user.is_authenticated %}
                     <form action="{% url "logout" %}" method='POST'>
                         {% csrf_token %}
@@ -18,4 +21,14 @@
             </div>
           </div>
         </nav>
+        <script>
+            const menuBtn = document.getElementById('menu-btn')
+            const menu = document.getElementById('menu')
+
+            menuBtn.addEventListener('click', function(){
+                menu.classList.toggle('hidden')
+                menuBtn.textContent = menu.classList.contains('hidden')?'==':'X'
+            })
+
+        </script>
     </header>

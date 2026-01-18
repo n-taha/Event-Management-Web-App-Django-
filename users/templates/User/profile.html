@@ -1,0 +1,85 @@
+{% extends "user_dashboard.html" %}
+{% block content %}
+{% load static %}
+<div class="max-w-4xl mx-auto mt-10 px-4">
+
+    <div class="bg-white rounded-xl shadow p-6">
+
+        <div class="flex items-center gap-5 border-b pb-5">
+            {% if user.profile_picture %}
+                <img src="{{ user.profile_picture.url }}"
+                     class="w-20 h-20 rounded-full object-cover border"
+                     alt="Profile Picture">
+            {% else %}
+                <div class="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
+                    No Image
+                </div>
+            {% endif %}
+
+            <div>
+                <h2 class="text-xl font-semibold">
+                    {{full_name|default:username }}
+                </h2>
+                <p class="text-gray-500 text-sm">@{{ username }}</p>
+            </div>
+        </div>
+
+        <!-- Info -->
+        <div class="mt-5 grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+
+            <div>
+                <p class="text-gray-500">Email</p>
+                <p class="font-medium">{{ email|default:"Not provided" }}</p>
+            </div>
+
+            <div>
+                <p class="text-gray-500">Phone</p>
+                <p class="font-medium">{{ phone_number|default:"Not provided" }}</p>
+            </div>
+
+            <div>
+                <p class="text-gray-500">Address</p>
+                <p class="font-medium">{{ address|default:"Not provided" }}</p>
+            </div>
+
+            <div>
+                <p class="text-gray-500">Joined</p>
+                <p class="font-medium">{{ date_joined|date:"d M Y" }}</p>
+            </div>
+
+        </div>
+
+        <!-- Bio -->
+        <div class="mt-5">
+            <p class="text-gray-500 text-sm mb-1">Bio</p>
+            <p class="text-sm text-gray-700">
+                {{ bio|default:"No bio added" }}
+            </p>
+        </div>
+
+        <!-- Actions -->
+        <div class="mt-6 flex gap-3 flex-wrap">
+
+            <a href="{% url 'edit-profile' %}"
+               class="px-4 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+                Edit Profile
+            </a>
+
+            <a href="{% url 'password-reset' %}"
+               class="px-4 py-2 bg-yellow-500 text-white text-sm rounded hover:bg-yellow-600">
+                Reset Password
+            </a>
+
+            <form action="{% url 'logout' %}" method='POST'>
+                {% csrf_token %}
+                 <button
+                    class="px-4 py-2 bg-red-600 text-white text-sm rounded hover:bg-red-700">
+                    Logout
+                </button>
+            </form>
+
+        </div>
+
+    </div>
+</div>
+{% endblock content %}

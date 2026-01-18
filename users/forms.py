@@ -3,7 +3,11 @@ from django import forms
 from django.core.exceptions import ValidationError
 from events.forms import FormMixin
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import get_user_model
+from .models import CustomUserModel
+from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm, SetPasswordForm
 
+User = get_user_model()
 
 class CustomRegistrationForm(FormMixin, forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
@@ -85,4 +89,31 @@ class CreateGroupForm(FormMixin, forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.apply_class()
+
+class EditProfileForm(FormMixin,forms.ModelForm):
+    class Meta:
+        model = CustomUserModel
+        fields = ['first_name', 'last_name', 'profile_picture', 'bio', 'phone_number', 'address']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.apply_class()
+
+class CustomPasswordChangeForm(FormMixin, PasswordChangeForm):
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(user, *args, **kwargs)
+
+        self.apply_class()
+
+
+class CustomPasswordResetForm(FormMixin,PasswordResetForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.apply_class()
+
+
+class CustomPasswordResetConfirmForm(FormMixin,SetPasswordForm):
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(user, *args, **kwargs)
         self.apply_class()

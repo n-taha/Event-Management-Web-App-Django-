@@ -31,7 +31,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = ['https://*.onrender.com']
 
-
+AUTH_USER_MODEL = 'users.CustomUserModel'
 # Application definition
 
 INSTALLED_APPS = [
